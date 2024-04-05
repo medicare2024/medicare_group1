@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            font-family: "Poppins", sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: hsl(0, 100%, 95%);
+            transition: background-color 0.5s;
+        }
+        
+        .container {
+            max-width: 400px;
+            margin: 100px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #2B2A4C;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 5px;
+            color: #2B2A4C;
+        }
+        
+        input[type="text"],
+        input[type="password"] {
+            width: 100%;
+            padding: 10px;
+            margin: 5px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+        
+        button {
+            width: 100%;
+            padding: 10px;
+            background-color: #872341;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        
+        button:hover {
+            background-color: #c82333;
+        }
+        
+        footer {
+            background-color: #2B2A4C;
+            color: #fff;
+            text-align: center;
+            padding: 10px 0;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1 class="text-center">MediCare</h1>
+        <form id="loginForm">
+            <label for="username">Username:</label>
+            <input type="text" id="username" required>
+            <label for="password">Password:</label>
+            <input type="password" id="password" required>
+            <button type="submit" class="btn">Login</button>
+        </form>
+    </div>
+
+    <footer>
+        <p>&copy; 2024 MediCare App. All rights reserved.</p>
+    </footer>
+
+    <script>
+        if (sessionStorage.getItem("loggedIn")) {
+            window.location.href = 'webapp.html';
+        }
+
+        document.getElementById("loginForm").addEventListener("submit", function(event) {
+            event.preventDefault(); // Prevent form submission
+
+            // Get the username and password entered by the user
+            var username = document.getElementById("username").value;
+            var password = document.getElementById("password").value;
+
+            // Here, you can perform authentication logic
+            // For simplicity, let's assume the username is "admin" and password is "password"
+            if (username === "admin" && password === "password") {
+                // Authentication successful, redirect to the main page
+
+                sessionStorage.setItem('loggedIn', 'true');
+                window.location.href = "webapp.html"; // Replace "main.html" with the URL of your main page
+            } else {
+                // Authentication failed, display an error message
+                alert("Invalid username or password. Please try again.");
+            }
+        });
+    </script>
+</body>
+
+</html>

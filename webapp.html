@@ -1,0 +1,1001 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MediCare App</title>
+    <link rel="icon" type="image/png" href="medicare_logo.png">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+
+
+    <style>
+        body {
+            font-family: "Poppins", sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: hsl(0, 100%, 95%);
+            transition: background-color 0.5s;
+        }
+        
+        body.dark-mode {
+            background-color: #1a1a1a;
+        }
+        
+        .navbar {
+            background-color: #2B2A4C;
+            padding: 10px 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: relative;
+        }
+        
+        .navbar-brand {
+            color: #fff;
+            font-size: 24px;
+            margin-left: 20px;
+        }
+        
+        .menu-toggle {
+            cursor: pointer;
+            padding: 10px;
+            background: transparent;
+            border: none;
+            outline: none;
+            color: #fff;
+            font-size: 20px;
+            margin-left: 5%;
+            margin-right: auto;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 100px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        #healthTips {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+        }
+        
+        input[type="number"] {
+            width: 100%;
+            padding: 10px;
+            margin: 5px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+        
+        button {
+            padding: 10px;
+            background-color: #B04759;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        
+        button:hover {
+            background-color: #c82333;
+        }
+        
+        .result {
+            margin-top: 20px;
+        }
+        
+        .sidenav {
+            height: 100%;
+            width: 0;
+            position: fixed;
+            z-index: 1;
+            top: 0;
+            left: 0;
+            background-color: #B04759;
+            overflow-x: hidden;
+            transition: 0.5s;
+            padding-top: 60px;
+        }
+        
+        .sidenav a {
+            padding: 10px 20px;
+            text-decoration: none;
+            font-size: 18px;
+            color: #fff;
+            display: block;
+            transition: 0.3s;
+        }
+        
+        .sidenav a:hover {
+            background-color: #c82333;
+            border-radius: 5px;
+        }
+        
+        .closebtn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            font-size: 36px;
+            margin-left: 50px;
+            cursor: pointer;
+            color: #fff;
+        }
+        
+        .rounded {
+            border-radius: 15px;
+            padding: 5px 10px;
+        }
+        
+        .dark-mode-toggle {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            padding: 10px;
+            background: transparent;
+            border: none;
+            outline: none;
+            color: #fff;
+            font-size: 20px;
+            cursor: pointer;
+        }
+        
+        .text-center {
+            text-align: center;
+        }
+        
+        #calorieCounter {
+            display: none;
+            max-width: 600px;
+            margin: 20px auto;
+            padding: 20px;
+        }
+        
+        #calorieCounter h2 {
+            margin-bottom: 10px;
+        }
+        
+        #calorieCounter label {
+            display: block;
+            margin-bottom: 5px;
+        }
+        
+        #calorieCounter input[type="text"],
+        #calorieCounter input[type="number"] {
+            width: calc(100% - 12px);
+            padding: 8px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+        
+        #calorieCounter button {
+            padding: 10px;
+            margin-top: 10px;
+            background-color: #872341;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        
+        #calorieCounter button:hover {
+            background-color: #c82333;
+        }
+        
+        #calorieCounter ul {
+            margin-top: 20px;
+            padding-left: 0;
+        }
+        
+        #calorieCounter ul li {
+            list-style: none;
+            margin-bottom: 5px;
+        }
+        
+        #calorieCounter .result {
+            margin-top: 10px;
+            font-weight: bold;
+        }
+        
+        .dropbtn {
+            cursor: pointer;
+            padding: 10px;
+            background-color: transparent;
+            border: none;
+            outline: none;
+            color: #fff;
+            font-size: 16px;
+        }
+        
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: #f9f9f9;
+            min-width: 130px;
+            box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+            z-index: 1;
+            top: 50px;
+            right: 5%;
+        }
+        
+        .dropdown-content a {
+            padding: 10px 12px;
+            text-decoration: none;
+            display: block;
+        }
+        
+        .dropdown-content a:hover {
+            background-color: #ddd;
+        }
+        
+        .dropdown-profile {
+            margin-right: 5%;
+        }
+        
+        .dropdown-profile:hover .dropdown-content {
+            display: block;
+        }
+        
+        .dropdown-profile:hover .dropbtn {
+            background-color: #c82333;
+        }
+        /* Style the accordion container */
+        
+        .accordion {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        .accordion-panel {
+            display: none;
+            padding: 10px;
+        }
+        /* Updated CSS styles */
+        
+        .accordion-header {
+            position: relative;
+            /* Ensure relative positioning for the arrow icon */
+            padding: 10px;
+            margin: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            border: none;
+            outline: none;
+            width: 100%;
+            text-align: left;
+            font-size: 20px;
+        }
+        /* Position and style the arrow icon */
+        
+        .accordion-header::after {
+            content: '\25B8';
+            /* Unicode for the arrow icon */
+            position: absolute;
+            top: 50%;
+            right: 10px;
+            transform: translateY(-50%);
+            transition: transform 0.3s;
+        }
+        /* Rotate the arrow icon when the accordion header is active */
+        
+        .accordion-header.active::after {
+            transform: translateY(-50%) rotate(90deg);
+        }
+        
+        .accordion-header::after {
+            content: '\25B8';
+            position: absolute;
+            top: 50%;
+            right: 10px;
+            transform: translateY(-50%);
+            transition: transform 0.3s;
+        }
+        
+        .accordion-header.active::after {
+            transform: translateY(-50%) rotate(90deg);
+        }
+        
+        .calendar {
+            max-width: 400px;
+            margin: 0 auto;
+        }
+        
+        .calendar table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        .calendar th,
+        .calendar td {
+            padding: 10px;
+            text-align: center;
+            border: 1px solid #ddd;
+        }
+        
+        .calendar th {
+            background-color: #f2f2f2;
+        }
+        
+        .note {
+            margin-top: 10px;
+            padding: 5px;
+            background-color: #f2f2f2;
+            border-radius: 5px;
+        }
+        
+        .btn {
+            cursor: pointer;
+            background-color: #872341;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            padding: 8px 16px;
+            margin: 0 5px;
+            font-size: 16px;
+        }
+        
+        .btn:hover {
+            background-color: #c82333;
+        }
+        
+        .arrow {
+            font-size: 20px;
+            vertical-align: middle;
+        }
+        
+        tr:hover {
+            background-color: #f2f2f2;
+            cursor: pointer;
+        }
+        
+        footer {
+            background-color: #2B2A4C;
+            color: #fff;
+            text-align: center;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="navbar">
+        <span class="navbar-brand rounded"><img src="medicare_logo.png"
+                    alt="Medicare Logo" height="30"> Medicare</span>
+        <button class="dark-mode-toggle" onclick="toggleDarkMode()">🌙</button>
+
+        <button class="menu-toggle" onclick="toggleNav()">&#9776;</button>
+        <div class="dropdown-profile">
+            <button class="dropbtn">Juan Dela Cruz</button>
+            <div class="dropdown-content">
+                <a href="#" onclick="logout()">Logout</a>
+            </div>
+        </div>
+    </div>
+
+    <div id="mySidenav" class="sidenav">
+        <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+        <a href="#" class="nav-item-text" onclick="showCalculator('tips')"><i class="fas fa-heartbeat"></i> Health Tips</a>
+        <a href="#" class="nav-item-text" onclick="showCalculator('insuranceCalculator')"><i class="fas fa-calculator"></i> Insurance Calculator</a>
+        <a href="#" class="nav-item-text" onclick="showCalculator('bmiCalculator')"><i class="fas fa-weight"></i> BMI Calculator</a>
+        <a href="#" class="nav-item-text" onclick="showCalculator('calorieCounter')"><i class="fas fa-utensils"></i> Calorie Counter</a>
+        <a href="#" class="nav-item-text" onclick="showCalculator('calendarContent')"><i class="fas fa-calendar-alt"></i> Calendar</a>
+        <a href="#" class="nav-item-text" onclick="showCalculator('contacts')"><i class="fas fa-address-book"></i> Contacts</a>
+    </div>
+
+
+    <div class="container">
+        <div id="tips">
+            <h1 class="text-center">Health Tips</h1>
+
+            <div class="accordion">
+                <!-- Nutrition Tips -->
+                <div class="accordion-item">
+                    <button class="accordion-header">Nutrition Tips</button>
+                    <div class="accordion-panel">
+                        <ul>
+                            <li>Eating a balanced diet is crucial for maintaining good health. Include plenty of fruits, vegetables, lean proteins, and whole grains in your meals.</li>
+                            <li>Try meal planning to ensure you're getting a variety of nutrients throughout the week. Experiment with new recipes that incorporate fresh ingredients.</li>
+                            <li>Practice portion control by paying attention to serving sizes and listening to your body's hunger cues. Avoid mindless eating in front of screens.</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Exercise Recommendations -->
+                <div class="accordion-item">
+                    <button class="accordion-header">Exercise Recommendations</button>
+                    <div class="accordion-panel">
+                        <ul>
+                            <li>Stay active with workouts tailored to your fitness level and goals. Whether it's walking, cycling, or weightlifting, find activities you enjoy.</li>
+                            <li>Incorporate physical activity into your daily routine by taking the stairs, going for walks during breaks, or doing household chores.</li>
+                            <li>Balance your exercise routine with both cardio, like running or swimming, and strength training exercises such as weightlifting or bodyweight exercises.</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Stress Management Techniques -->
+                <div class="accordion-item">
+                    <button class="accordion-header">Stress Management Techniques</button>
+                    <div class="accordion-panel">
+                        <ul>
+                            <li>Practice relaxation techniques like deep breathing exercises or mindfulness meditation to calm your mind and reduce stress.</li>
+                            <li>Manage your time effectively by prioritizing tasks and setting realistic goals. Learn to say no to additional commitments when necessary.</li>
+                            <li>Engage in hobbies or activities that bring you joy and relaxation, whether it's painting, gardening, or spending time with loved ones.</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Sleep Hygiene Tips -->
+                <div class="accordion-item">
+                    <button class="accordion-header">Sleep Hygiene Tips</button>
+                    <div class="accordion-panel">
+                        <ul>
+                            <li>Improve your sleep quality by maintaining a consistent sleep schedule, even on weekends. Establish a relaxing bedtime routine to signal to your body that it's time to wind down.</li>
+                            <li>Create a sleep-friendly environment by keeping your bedroom dark, quiet, and cool. Invest in a comfortable mattress and pillows that support a restful night's sleep.</li>
+                            <li>Avoid screens before bedtime as the blue light can disrupt your body's natural sleep-wake cycle. Limit caffeine intake in the afternoon and evening to prevent sleep disturbances.</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Hydration Advice -->
+                <div class="accordion-item">
+                    <button class="accordion-header">Hydration Advice</button>
+                    <div class="accordion-panel">
+                        <ul>
+                            <li>Stay hydrated throughout the day by drinking water regularly. Aim to consume at least 8 glasses of water daily, and more if you're active or in hot weather.</li>
+                            <li>Experiment with different beverages like herbal teas or infused water to add flavor to your hydration routine without added sugars or calories.</li>
+                            <li>Avoid excessive caffeine and sugary drinks, as they can lead to dehydration and contribute to health issues like weight gain and dental problems.</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Preventive Health Measures -->
+                <div class="accordion-item">
+                    <button class="accordion-header">Preventive Health Measures</button>
+                    <div class="accordion-panel">
+                        <ul>
+                            <li>Take proactive steps to safeguard your health by scheduling regular check-ups and screenings with your healthcare provider. Vaccinations are essential for preventing serious illnesses.</li>
+                            <li>Be aware of common health risks such as high blood pressure, diabetes, and cancer. Adopt healthy lifestyle habits like eating well, exercising regularly, and avoiding tobacco to reduce your risk.</li>
+                            <li>Stay informed about your health and ask questions during medical appointments. Advocate for your well-being and seek professional guidance when needed.</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Mental Health Support -->
+                <div class="accordion-item">
+                    <button class="accordion-header">Mental Health Support</button>
+                    <div class="accordion-panel">
+                        <ul>
+                            <li>If you're struggling with mental health issues like anxiety or depression, reach out for support. Consider therapy, counseling, or support groups to connect with others who understand what you're going through.</li>
+                            <li>In times of crisis, don't hesitate to call hotlines or seek emergency assistance. You're not alone, and there are people who can help you through difficult times.</li>
+                            <li>Break the stigma surrounding mental health by sharing your experiences and encouraging open conversations. Education and understanding are key to promoting acceptance and support for those with mental health conditions.</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Healthy Lifestyle Habits -->
+                <div class="accordion-item">
+                    <button class="accordion-header">Healthy Lifestyle Habits</button>
+                    <div class="accordion-panel">
+                        <ul>
+                            <li>Quit smoking to improve your lung health and reduce your risk of heart disease, cancer, and other serious health issues. Seek support from friends, family, or smoking cessation programs if you need help.</li>
+                            <li>Drink alcohol in moderation, if at all, to minimize health risks such as liver disease, addiction, and accidents. Know your limits and avoid binge drinking or driving under the influence.</li>
+                            <li>Avoid substance abuse and seek help if you're struggling with addiction. Substance abuse can have devastating effects on your physical health, mental well-being, and relationships.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div id="bmiCalculator" style="display: none;">
+            <h1 class="text-center">BMI Calculator</h1>
+            <p>Check your BMI now</p>
+            <p>You can use the BMI calculator here to divide your weight in kg by your height in meters and compare your result to the BMI classes. Enter your height and weight and check your results in the table below. Click on a BMI class to learn more.
+            </p>
+            <label for="height">Height (m):</label>
+            <input type="number" id="height" min="0">
+            <label for="weight">Weight (kg):</label>
+            <input type="number" id="weight" min="0">
+            <button onclick="calculateBMI()">Calculate</button>
+            <div class="result" id="bmiResult"></div>
+
+            <h3>BMI Classes</h3>
+            <table>
+                <tr>
+                    <th>Classification</th>
+                    <th>BMI</th>
+                </tr>
+                <tr onclick="showBMIInfo('Underweight')">
+                    <td>Underweight</td>
+                    <td>Below 18.5</td>
+                </tr>
+                <tr onclick="showBMIInfo('Normal')">
+                    <td>Normal</td>
+                    <td>18.5-24.9</td>
+                </tr>
+                <tr onclick="showBMIInfo('Overweight')">
+                    <td>Overweight</td>
+                    <td>25.0-29.9</td>
+                </tr>
+                <tr onclick="showBMIInfo('Obesity')">
+                    <td>Obesity</td>
+                    <td>30 and above</td>
+                </tr>
+                <tr onclick="showBMIInfo('Class I')">
+                    <td>Class I</td>
+                    <td>30.0-34.9</td>
+                </tr>
+                <tr onclick="showBMIInfo('Class II')">
+                    <td>Class II</td>
+                    <td>35.0-39.9</td>
+                </tr>
+                <tr onclick="showBMIInfo('Class III')">
+                    <td>Class III</td>
+                    <td>40 and above</td>
+                </tr>
+            </table>
+        </div>
+
+        <div id="insuranceCalculator" style="display: none;">
+            <h1>Assessing the Present</h1>
+            <form id="insuranceForm">
+                <label for="monthlyExpense">How much is your monthly household expense?</label>
+                <input type="number" id="monthlyExpense" required><br><br>
+
+                <label for="currentSavings">How much is your current savings?</label>
+                <input type="number" id="currentSavings" required><br><br>
+
+                <label for="totalInvestments">How much are your total investments?</label>
+                <input type="number" id="totalInvestments" required><br><br>
+
+                <label for="currentInsuranceCoverage">How much is your current insurance coverage?</label>
+                <input type="number" id="currentInsuranceCoverage" required><br><br>
+
+                <label for="currentDebts">How much is your current debts and liabilities?</label>
+                <input type="number" id="currentDebts" required><br><br>
+
+                <button type="button" onclick="calculateInsurance()">Calculate</button>
+            </form>
+
+            <div id="insuranceResult" style="display: none;">
+                <h2>Our Result</h2>
+                <p>Here is the additional coverage you will need to provide for your beneficiaries.</p>
+                <p>Life insurance is something you rarely get for yourself - you get insured in order to benefit your loved ones. As a rule of thumb, you should be covered at least 10 times your annual income.</p>
+                <p>An additional coverage of <span id="additionalCoverageNeeded"></span> will help pay for your beneficiary's expected expenses and liabilities, in case something unexpected happens.</p>
+                <p>Good news is, you don't need to shell out the entire amount! Talk to a Sun Life Advisor today to find out how can you properly fund the current and future needs of your loved ones.</p>
+
+                <h3>Existing coverage</h3>
+                <p>Combined amount of your savings, investments and current insurance coverage that your beneficiaries may use should something happen to you: <span id="netWorth"></span></p>
+
+                <h3>Additional coverage needed</h3>
+                <p>Recommended additional amount to sufficiently fund for your beneficiary's current and future needs for about 10 years, with an annual inflation rate of 4%: <span id="additionalCoverageNeeded"></span></p>
+            </div>
+        </div>
+
+        <div id="calorieCounter">
+            <h1 class="text-center">Calorie Counter</h1>
+            <label for="food">Food Item:</label>
+            <input type="text" id="food">
+            <label for="calories">Calories:</label>
+            <input type="number" id="calories" min="0">
+            <button onclick="addCalorie()">Add</button>
+            <button onclick="resetFields()">Reset</button>
+
+            <ul id="calorieList"></ul>
+            <div class="result" id="totalCalories"></div>
+        </div>
+
+        <div id="calendarContent" style="display: none;">
+            <div class="calendar">
+                <h2 id="month-year"></h2>
+
+                <button class="btn" onclick="prevMonth()"><span class="arrow">◄</span> Prev</button>
+                <button class="btn" onclick="nextMonth()">Next <span class="arrow">►</span></button>
+
+                <div id="calendar"></div>
+            </div>
+        </div>
+
+        <div id="contacts" style="display: none;">
+            <h1 class="text-center">Useful Contacts</h1>
+
+            <div class="contact">
+                <h2>Department of Health (DOH)</h2>
+                <p>Hotline: 02-894-COVID (26843)</p>
+                <p>Email: actioncenter@doh.gov.ph</p>
+                <p>Website: <a href="https://www.doh.gov.ph/">www.doh.gov.ph</a></p>
+            </div>
+
+            <div class="contact">
+                <h2>Lung Center of the Philippines</h2>
+                <p>Hotline: (02) 8924-6101 / (02) 8925-2401</p>
+                <p>Website: <a href="https://www.lcp.gov.ph/">www.lcp.gov.ph</a></p>
+            </div>
+
+            <div class="contact">
+                <h2>National Poison Management and Control Center</h2>
+                <p>Hotline: (02) 8403-2744 / (02) 8403-2731 local 114</p>
+                <p>Website: <a href="http://nphrd.dirp3.pids.gov.ph/">nphrd.dirp3.pids.gov.ph</a></p>
+            </div>
+
+            <div class="contact">
+                <h2>Philippine Children's Medical Center</h2>
+                <p>Hotline: (02) 8921-9771 / (02) 8921-9061</p>
+                <p>Website: <a href="https://www.pcmc.gov.ph/">www.pcmc.gov.ph</a></p>
+            </div>
+
+            <div class="contact">
+                <h2>Philippine Dental Association</h2>
+                <p>Hotline: (02) 8-890-4609 / (02) 8-892-8369</p>
+                <p>Website: <a href="https://www.pda.com.ph/">www.pda.com.ph</a></p>
+            </div>
+
+            <div class="contact">
+                <h2>Philippine General Hospital (PGH)</h2>
+                <p>Hotline: (02) 155-200 / (02) 521-8450</p>
+                <p>Website: <a href="https://www.up-pgh.org/">www.up-pgh.org</a></p>
+            </div>
+
+            <div class="contact">
+                <h2>Philippine Heart Center</h2>
+                <p>Hotline: (02) 8924-6101 / (02) 8925-2401</p>
+                <p>Website: <a href="https://www.phc.gov.ph/">www.phc.gov.ph</a></p>
+            </div>
+
+            <div class="contact">
+                <h2>Philippine Mental Health Association</h2>
+                <p>Hotline: (02) 7-804-HOPE (4673)</p>
+                <p>Website: <a href="http://www.pmha.org.ph/">www.pmha.org.ph</a></p>
+            </div>
+
+            <div class="contact">
+                <h2>Philippine National AIDS Council (PNAC)</h2>
+                <p>Hotline: (02) 8920-9030 to 32</p>
+                <p>Website: <a href="https://pnac.org.ph/">pnac.org.ph</a></p>
+            </div>
+
+            <div class="contact">
+                <h2>Philippine Obstetrical and Gynecological Society (POGS)</h2>
+                <p>Hotline: (02) 8-727-6431 / (02) 8-725-3826</p>
+                <p>Website: <a href="https://www.pogsinc.org/">www.pogsinc.org</a></p>
+            </div>
+
+            <div class="contact">
+                <h2>Philippine Orthopedic Center</h2>
+                <p>Hotline: (02) 8928-8501 / (02) 8928-8417</p>
+                <p>Website: <a href="https://www.poc.doh.gov.ph/">www.poc.doh.gov.ph</a></p>
+            </div>
+
+            <div class="contact">
+                <h2>Philippine Red Cross</h2>
+                <p>Hotline: 143 or (02) 527 0000</p>
+                <p>Website: <a href="https://www.redcross.org.ph/">www.redcross.org.ph</a></p>
+            </div>
+
+            <div class="contact">
+                <h2>Philippine Society of Nephrology</h2>
+                <p>Hotline: (02) 8-925-1585 / (02) 8-921-5875</p>
+                <p>Website: <a href="https://psn.ph/">psn.ph</a></p>
+            </div>
+
+            <div class="contact">
+                <h2>National Center for Mental Health (NCMH)</h2>
+                <p>Hotline: (02) 8531-9001 / (02) 8531-9995</p>
+                <p>Website: <a href="https://ncmh.gov.ph/">ncmh.gov.ph</a></p>
+            </div>
+        </div>
+    </div>
+    </div>
+    <footer>
+        <p>&copy; 2024 Medi-Care App. All rights reserved.</p>
+    </footer>
+    <script>
+        if (!sessionStorage.getItem("loggedIn")) {
+            window.location.href = 'login.html';
+        }
+
+        function toggleNav() {
+            var sideNav = document.getElementById("mySidenav");
+            if (sideNav.style.width === "250px") {
+                sideNav.style.width = "0";
+            } else {
+                sideNav.style.width = "250px";
+            }
+        }
+
+        function closeNav() {
+            document.getElementById("mySidenav").style.width = "0";
+        }
+
+        function showCalculator(calculatorId) {
+            var calculators = document.querySelectorAll('.container > div');
+            for (var i = 0; i < calculators.length; i++) {
+                calculators[i].style.display = 'none';
+            }
+            document.getElementById(calculatorId).style.display = 'block';
+        }
+
+        function calculateBMI() {
+            const height = parseFloat(document.getElementById('height').value);
+            const weight = parseFloat(document.getElementById('weight').value);
+
+            if (isNaN(height) || isNaN(weight)) {
+                document.getElementById('bmiResult').innerText = 'Please enter valid height and weight.';
+                return;
+            }
+
+            const bmi = weight / (height * height);
+
+            document.getElementById('bmiResult').innerText = `Your BMI is ${bmi.toFixed(2)}.`;
+        }
+
+        function showBMIInfo(bmiClass) {
+            var info = '';
+            switch (bmiClass) {
+                case 'Underweight':
+                    info = 'Underweight: A BMI below 18.5 indicates that you may be underweight for your height. It\'s important to consult with a healthcare provider to determine if this is a healthy weight for you.';
+                    break;
+                case 'Normal':
+                    info = 'Normal: A BMI between 18.5 and 24.9 indicates that you have a healthy weight for your height.';
+                    break;
+                case 'Overweight':
+                    info = 'Overweight: A BMI between 25.0 and 29.9 indicates that you may be overweight for your height. It\'s important to consult with a healthcare provider to determine if this is a healthy weight for you.';
+                    break;
+                case 'Obesity':
+                    info = 'Obesity: A BMI of 30 or higher indicates that you may have obesity. Obesity can increase your risk of various health conditions, so it\'s important to consult with a healthcare provider to discuss potential health risks and weight management options.';
+                    break;
+                case 'Class I':
+                    info = 'Class I Obesity: A BMI between 30.0 and 34.9 indicates Class I obesity. It\'s important to consult with a healthcare provider to discuss potential health risks and weight management options.';
+                    break;
+                case 'Class II':
+                    info = 'Class II Obesity: A BMI between 35.0 and 39.9 indicates Class II obesity. It\'s important to consult with a healthcare provider to discuss potential health risks and weight management options.';
+                    break;
+                case 'Class III':
+                    info = 'Class III Obesity: A BMI of 40 or higher indicates Class III obesity. It\'s important to consult with a healthcare provider to discuss potential health risks and weight management options.';
+                    break;
+                default:
+                    info = 'BMI information not available.';
+            }
+            alert(info);
+        }
+
+        function calculateInsurance() {
+            var monthlyExpense = parseFloat(document.getElementById("monthlyExpense").value);
+            var currentSavings = parseFloat(document.getElementById("currentSavings").value);
+            var totalInvestments = parseFloat(document.getElementById("totalInvestments").value);
+            var currentInsuranceCoverage = parseFloat(document.getElementById("currentInsuranceCoverage").value);
+            var currentDebts = parseFloat(document.getElementById("currentDebts").value);
+
+            var annualIncome = monthlyExpense * 12;
+            var netWorth = currentSavings + totalInvestments + currentInsuranceCoverage - currentDebts;
+
+            var additionalCoverageNeeded = annualIncome * 10 - netWorth;
+            var additionalCoverageNeededAdjusted = additionalCoverageNeeded * Math.pow(1.04, 10); // Adjusting for 10 years with 4% annual inflation
+
+            document.getElementById("netWorth").innerText = "₱" + netWorth.toFixed(2);
+            document.getElementById("additionalCoverageNeeded").innerText = "₱" + additionalCoverageNeededAdjusted.toFixed(2);
+
+            document.getElementById("insuranceResult").style.display = "block";
+        }
+
+
+
+
+        function addCalorie() {
+            var foodItem = document.getElementById('food').value;
+            var calorieCount = parseInt(document.getElementById('calories').value);
+            if (foodItem === '' || isNaN(calorieCount) || calorieCount <= 0) {
+                alert('Please enter a valid food item and calorie count.');
+                return;
+            }
+            var calorieList = document.getElementById('calorieList');
+            var totalCalories = document.getElementById('totalCalories');
+            var listItem = document.createElement('li');
+            listItem.textContent = `${foodItem}: ${calorieCount} calories`;
+            calorieList.appendChild(listItem);
+            var total = 0;
+            var items = calorieList.getElementsByTagName('li');
+
+            for (var i = 0; i < items.length; i++) {
+                var calories = parseInt(items[i].textContent.split(':')[1]);
+                total += calories;
+            }
+            totalCalories.textContent = `Total Calories: ${total}`;
+            document.getElementById('food').value = '';
+            document.getElementById('calories').value = '';
+        }
+
+        function resetFields() {
+            document.getElementById('food').value = '';
+            document.getElementById('calories').value = '';
+            document.getElementById('calorieList').innerHTML = '';
+            document.getElementById('totalCalories').textContent = 'Total Calories: 0';
+        }
+
+        function toggleDarkMode() {
+            document.body.classList.toggle('dark-mode');
+        }
+
+        function logout() {
+            sessionStorage.removeItem('loggedIn');
+
+            window.location.href = 'login.html';
+        }
+
+        // Get all accordion headers
+        const accordionHeaders = document.querySelectorAll('.accordion-header');
+
+        // Add event listener to each header
+        accordionHeaders.forEach(header => {
+            header.addEventListener('click', () => {
+                // Toggle the active class to expand/collapse panel
+                header.classList.toggle('active');
+                const panel = header.nextElementSibling;
+                if (panel.style.display === 'block') {
+                    panel.style.display = 'none';
+                } else {
+                    panel.style.display = 'block';
+                }
+            });
+        });
+
+        let notes = {};
+        let currentYear, currentMonth;
+
+        function generateCalendar(year, month) {
+            const startDate = new Date(year, month, 1);
+            const endDate = new Date(year, month + 1, 0);
+            const today = new Date();
+
+            const table = document.createElement('table');
+            const thead = document.createElement('thead');
+            const tbody = document.createElement('tbody');
+
+            // Create header row
+            const headerRow = document.createElement('tr');
+            const daysOfWeek = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+            daysOfWeek.forEach(day => {
+                const th = document.createElement('th');
+                th.textContent = day;
+                headerRow.appendChild(th);
+            });
+            thead.appendChild(headerRow);
+            table.appendChild(thead);
+
+            // Create calendar cells
+            let currentDate = new Date(startDate);
+            while (currentDate <= endDate) {
+                const tr = document.createElement('tr');
+                for (let i = 0; i < 7; i++) {
+                    const td = document.createElement('td');
+                    td.textContent = currentDate.getDate();
+                    if (currentDate.getMonth() !== month) {
+                        td.classList.add('inactive');
+                    } else {
+                        const dateStr = formatDate(currentDate); // Format as YYYY-MM-DD
+                        td.dataset.date = dateStr;
+                        td.addEventListener('click', () => {
+                            editNoteDialog(currentDate);
+                        });
+                        if (dateStr in notes && notes[dateStr].length > 0) {
+                            const noteSpan = document.createElement('span');
+                            noteSpan.textContent = notes[dateStr].length;
+                            td.appendChild(noteSpan);
+                        }
+                        if (currentDate.toDateString() === today.toDateString()) {
+                            td.classList.add('today');
+                        }
+                    }
+                    tr.appendChild(td);
+                    currentDate.setDate(currentDate.getDate() + 1);
+                }
+                tbody.appendChild(tr);
+            }
+
+            table.appendChild(tbody);
+            return table;
+        }
+
+        // Function to format date as YYYY-MM-DD
+        function formatDate(date) {
+            const year = date.getFullYear();
+            const month = date.getMonth() + 1; // Get month index (0-11)
+            const day = String(date.getDate()).padStart(2, '0');
+            return `${year}-${month}-${day}`;
+        }
+
+        function editNoteDialog(date) {
+            const dateStr = formatDate(date); // Format as YYYY-MM-DD
+            let noteText = '';
+            const formattedDate = `${getMonthName(currentMonth)} ${date.getFullYear()}`; // Format as full month name and year
+            if (dateStr in notes && notes[dateStr].length > 0) {
+                noteText = 'Edit notes for ' + formattedDate + ':\n';
+                notes[dateStr].forEach((note, index) => {
+                    noteText += `${index + 1}. ${note}\n`;
+                });
+            } else {
+                noteText = 'No notes for ' + formattedDate + '. Enter new note:';
+            }
+            const newNote = prompt(noteText, notes[dateStr] ? notes[dateStr].join('\n') : '');
+            if (newNote !== null) {
+                notes[dateStr] = newNote.split('\n').filter(note => note.trim() !== '');
+                saveNotes();
+                updateCalendar();
+            }
+        }
+
+        function updateCalendar() {
+            const calendarDiv = document.getElementById('calendar');
+            calendarDiv.innerHTML = '';
+            const monthYearElement = document.getElementById('month-year');
+            monthYearElement.textContent = `${getMonthName(currentMonth)} ${currentYear}`;
+            calendarDiv.appendChild(generateCalendar(currentYear, currentMonth));
+        }
+
+        // Function to save notes to localStorage
+        function saveNotesToLocal(notes) {
+            localStorage.setItem('notes', JSON.stringify(notes));
+        }
+
+        // Function to load notes from localStorage
+        function loadNotesFromLocal() {
+            const savedNotes = localStorage.getItem('notes');
+            return savedNotes ? JSON.parse(savedNotes) : {};
+        }
+
+        // Save notes to localStorage
+        function saveNotes() {
+            saveNotesToLocal(notes);
+        }
+
+        // Load notes from localStorage
+        function loadNotes() {
+            notes = loadNotesFromLocal();
+        }
+
+        function prevMonth() {
+            currentMonth--;
+            if (currentMonth < 0) {
+                currentMonth = 11;
+                currentYear--;
+            }
+            updateCalendar();
+        }
+
+        function nextMonth() {
+            currentMonth++;
+            if (currentMonth > 11) {
+                currentMonth = 0;
+                currentYear++;
+            }
+            updateCalendar();
+        }
+
+        // Initialize calendar
+        const currentDate = new Date();
+        currentYear = currentDate.getFullYear();
+        currentMonth = currentDate.getMonth();
+        loadNotes();
+        updateCalendar();
+
+        function getMonthName(monthIndex) {
+            const monthNames = ["January", "February", "March", "April", "May", "June",
+                "July", "August", "September", "October", "November", "December"
+            ];
+            return monthNames[monthIndex];
+        }
+    </script>
+</body>
+
+</html>
